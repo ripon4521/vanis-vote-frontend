@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 
 export default function Regester() {
   const [formData, setFormData] = useState({
@@ -17,7 +18,40 @@ export default function Regester() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(formData); // Replace with form submission logic
+    const userDeafaultBalance = 40;
+    const agentDeafaultBalance = 1000000;
+    let balance = 0;
+    if (formData.accountType === "user") {
+      balance = userDeafaultBalance;
+    } else if (formData.accountType === "agent") {
+      balance = agentDeafaultBalance;
+    }
+
+    if (formData.mobile.length > 11 || formData.mobile.length < 11) {
+        toast.warning("Invalid mobile number. Please enter a 11-digit number.");
+      return;
+        
+    }else if (formData.pin.length > 5 || formData.pin.length < 5) {
+        toast.warning("Invalid PIN. Please enter a 5-digit number.");
+      return;
+    } else if (formData.accountType === '') {
+        toast.warning("Please select an account type.");
+      return;
+        
+    }
+
+
+    const data = {
+        name: formData.name,
+      email: formData.email,
+      mobile: formData.mobile,
+      pin: formData.pin,
+      nid: formData.nid,
+      accountType: formData.accountType,
+      balance,
+    }
+
+    console.log(data); // Replace with form submission logic
   };
 
   return (
@@ -31,6 +65,7 @@ export default function Regester() {
               Name
             </label>
             <input
+            required
               id="name"
               name="name"
               type="text"
@@ -46,6 +81,7 @@ export default function Regester() {
               Mobile Number
             </label>
             <input
+            required
               id="mobile"
               name="mobile"
               type="text"
@@ -61,6 +97,7 @@ export default function Regester() {
               Email
             </label>
             <input
+            required
               id="email"
               name="email"
               type="email"
@@ -76,6 +113,7 @@ export default function Regester() {
               PIN
             </label>
             <input
+            required
               id="pin"
               name="pin"
               type="password"
@@ -91,6 +129,7 @@ export default function Regester() {
               NID
             </label>
             <input
+            required
               id="nid"
               name="nid"
               type="text"
@@ -106,6 +145,7 @@ export default function Regester() {
               Account Type
             </label>
             <select
+            required
               id="accountType"
               name="accountType"
               value={formData.accountType}

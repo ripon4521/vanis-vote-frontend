@@ -3,6 +3,8 @@ import MainLayout from "../Layout/MainLayout";
 import Home from "../Pages/Home/Home/Home";
 import DashboardLayout from "../Layout/DashboardLayout";
 import Regester from "../Pages/Home/Register/Regester";
+import User from "../Pages/User/User";
+import AgentDashboard from "../Pages/Agent/AgentDashboard";
 
 
 
@@ -20,6 +22,13 @@ export const router = createBrowserRouter([
                 path:"/register",
                 element: <Regester/>
             },
+            {
+                path:'/user-dashboard',
+                element:<User/>
+            },{
+                path:'/agent-dashboard',
+                element:<AgentDashboard/>
+            }
           
         ]
     },
