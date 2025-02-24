@@ -6,6 +6,11 @@ import Regester from "../Pages/Home/Register/Regester";
 import User from "../Pages/User/User";
 import AgentDashboard from "../Pages/Agent/AgentDashboard";
 import AdminDashboard from "../Pages/Admin/AdminDashboard";
+import Private from "../Private/Private";
+import Unauthorized from "../Pages/Unauthorized/Unauthorized";
+import UserPrivate from "../Private/UserPrivate";
+import AgentPrivate from "../Private/AgentPrivate";
+
 
 
 
@@ -25,16 +30,21 @@ export const router = createBrowserRouter([
             },
             {
                 path:'/user-dashboard',
-                element:<User/>
+                element:<UserPrivate><User/></UserPrivate>
             },{
                 path:'/agent-dashboard',
-                element:<AgentDashboard/>
+                element:<AgentPrivate><AgentDashboard/></AgentPrivate>
             },{
                 path:'/admin-dashboard',
-                element:<AdminDashboard/>
+                element:<Private><AdminDashboard/></Private>
             }
           
         ]
-    },
+    },{
+        
+            path:'/unauthorized',
+            element:<Unauthorized/>
+        
+    }
    
 ])

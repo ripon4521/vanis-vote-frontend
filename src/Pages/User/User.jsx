@@ -51,7 +51,7 @@ export default function User() {
                   <input
                     type="text"
                     placeholder="Enter recipient's number"
-                    className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-3 py-2 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                 </div>
                 <div>
@@ -59,7 +59,7 @@ export default function User() {
                   <input
                     type="number"
                     placeholder="Enter amount"
-                    className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-3 py-2 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                 </div>
                 <div>
@@ -67,10 +67,10 @@ export default function User() {
                   <input
                     type="password"
                     placeholder="Enter your PIN"
-                    className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-3 py-2 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                 </div>
-                <button className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600">
+                <button className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 hover:cursor-pointer">
                   Send Money
                 </button>
               </div>
@@ -88,7 +88,7 @@ export default function User() {
                   <input
                     type="number"
                     placeholder="Enter amount"
-                    className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-3 py-2 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                 </div>
                 <div>
@@ -96,10 +96,10 @@ export default function User() {
                   <input
                     type="text"
                     placeholder="Enter agent's number"
-                    className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-3 py-2 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                 </div>
-                <button className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600">
+                <button className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 hover:cursor-pointer">
                   Cash In
                 </button>
               </div>
@@ -117,7 +117,7 @@ export default function User() {
                   <input
                     type="number"
                     placeholder="Enter amount"
-                    className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-3 py-2 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                 </div>
                 <div>
@@ -125,7 +125,7 @@ export default function User() {
                   <input
                     type="text"
                     placeholder="Enter agent's number"
-                    className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-3 py-2 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                 </div>
                 <div>
@@ -133,10 +133,10 @@ export default function User() {
                   <input
                     type="password"
                     placeholder="Enter your PIN"
-                    className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-3 py-2 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                 </div>
-                <button className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600">
+                <button className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 hover:cursor-pointer">
                   Cash Out
                 </button>
               </div>
