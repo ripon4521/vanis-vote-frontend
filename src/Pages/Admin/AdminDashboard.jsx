@@ -4,13 +4,15 @@ import useGetAllUser from "../../Hooks/useGetAllUser";
 import useUser from "../../Hooks/useUser";
 import useTransaction from "../../Hooks/useTansction";
 import TransctionPage from "../User/TransctionPage";
+import { axiosPublic } from "../../Hooks/usePublic";
+import { toast } from "react-toastify";
 
 export default function AdminDashboard() {
   const { profile  } = useUser();
   const [searchTerm, setSearchTerm] = useState('');
   const [activeTab, setActiveTab] = useState("user-management");
   const [showBalance, setShowBalance] = useState(false);
-  const [ allUsers] = useGetAllUser(searchTerm);
+  const [ allUsers, refetch] = useGetAllUser(searchTerm);
   const [isModalOpen, setIsModalOpen] = useState(false); // State for modal visibility
   const [selectedUser, setSelectedUser] = useState(null);
   const [transactions] = useTransaction(profile?.mobile, profile?._id);
@@ -37,6 +39,10 @@ export default function AdminDashboard() {
  // Pass searchTerm here
   const handleSearch = (e) => {
     e.preventDefault();
+    if (e.target.mobile.value.length !== 11) {
+      toast.warning('Please provide a 11 digits Mobile Number');
+      return;
+    }
     setSearchTerm(e.target.mobile.value);
   };
 
@@ -51,6 +57,33 @@ export default function AdminDashboard() {
     console.log(data)
 
   }
+
+ const handleBlock = async ( _id,blocked) => {
+  const data = {
+    isBlocked: !blocked
+  }
+  axiosPublic.patch(`/user/${_id}`, data ).then((response) => {
+    console.log(response)
+    if (response.data.data.isBlocked === true    ) {
+      toast.success('User blocked ');
+    } else{
+      toast.success('User unblocked ');
+    }
+   
+    refetch();
+  }).catch((error) => console.log(error))
+
+
+
+
+
+
+ 
+};
+
+  
+
+
 
   return (
     <div className="container mx-auto py-10">
@@ -186,15 +219,21 @@ export default function AdminDashboard() {
   </div>
 )}
 
+{
+  user?.isBlocked === false ?   <td className="py-2 px-4 flex">
+  <button onClick={()=> handleBlock(user?._id, user?.isBlocked)} className="bg-red-500 text-white py-1 px-3 rounded-md mr-2 cursor-pointer">
+    Block
+  </button>
+ 
+</td> : <td className="py-2 px-4 flex">
 
-              <td className="py-2 px-4 flex">
-                <button className="bg-red-500 text-white py-1 px-3 rounded-md mr-2">
-                  Block
-                </button>
-                <button className="bg-green-500 text-white py-1 px-3 rounded-md">
-                  Unblock
-                </button>
-              </td>
+  <button onClick={()=> handleBlock(user?._id, user?.isBlocked)} className="bg-green-500 text-white py-1 px-3 rounded-md cursor-pointer">
+    Unblock
+  </button>
+</td>
+}
+
+            
             </tr>
           );
         })
