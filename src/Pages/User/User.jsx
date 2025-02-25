@@ -22,7 +22,6 @@ export default function User() {
     return window.location.href = '/';
   }
 
-  // Show balance for a few seconds after sending money
   const handleShowBalance = () => {
     setShowBalance(true);
     setTimeout(() => {
@@ -62,7 +61,6 @@ export default function User() {
       refetch();
       handleShowBalance();
 
-      // Display balance notification
       if (Notification.permission === "granted") {
         const updatedBalance = profile?.balance - amount - fee; // Calculate updated balance after fee
         new Notification(`💳 Your balance has been updated: ৳${updatedBalance}`);
@@ -130,16 +128,14 @@ export default function User() {
       transactionId,
       senderId,
       pin
-    }
+    };
 
-    
     try {
       const response = await axiosPublic.post('/cashout/create-cashout', data);
       toast.success(`✅ Cash Out Success. ৳${response.data.data.amount} to ${response.data.data.receiverNumber} (Fee: ৳${response.data.data.fee})`);
       refetch();
       handleShowBalance();
 
-      // Display balance notification
       if (Notification.permission === "granted") {
         const updatedBalance = profile?.balance - amount - fee; // Calculate updated balance after fee
         new Notification(`💳 Your balance has been updated: ৳${updatedBalance}`);
@@ -176,24 +172,18 @@ export default function User() {
         console.error("Request error:", err.message);
       }
     }
-
-   
-
-  } 
-
-
-
+  };
 
   return (
     <div className="max-w-6xl mx-auto py-10">
-      <div className="flex justify-between items-center">
+      <div className="flex justify-between items-center flex-col md:flex-row">
         <h1 className="text-3xl font-bold mb-6 ">User Dashboard</h1>
         <Header />
       </div>
 
-      <div className="grid gap-6">
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {/* Balance Card */}
-        <div className="border border-gray-200 rounded-lg shadow p-6">
+        <div className="border border-gray-200 rounded-lg shadow p-6 lg:w-[1150px] md:w-[750px]">
           <div className="mb-4">
             <h2 className="text-xl font-semibold">Balance</h2>
             <p className="text-sm text-gray-500">Click to reveal your balance and income</p>
@@ -201,15 +191,15 @@ export default function User() {
           {showBalance ? (
             <p className="text-lg font-semibold"><span className="text-red-500">{profile?.balance}</span> Tk</p>
           ) : (
-            <button className="w-full border  border-gray-200 cursor-pointer rounded-lg py-2 hover:bg-gray-100" onClick={handleShowBalance}>
+            <button className="w-full border border-gray-200 cursor-pointer rounded-lg py-2 hover:bg-gray-100" onClick={handleShowBalance}>
               Show Balance and Income
             </button>
           )}
         </div>
 
         {/* Tabs Section */}
-        <div className="bg-white shadow-md rounded-lg p-6">
-          <div className="grid grid-cols-3 gap-2 mb-4">
+        <div className="bg-white shadow-md rounded-lg p-6 col-span-1 md:col-span-2 lg:col-span-3">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-2 mb-4">
             <button
               onClick={() => setActiveTab("send-money")}
               className={`py-2 rounded-md ${activeTab === "send-money" ? "bg-blue-500 text-white" : "bg-gray-200 cursor-pointer"}`}
@@ -239,7 +229,7 @@ export default function User() {
                       type="text"
                       name="phoneNumber"
                       placeholder="Enter recipient's number"
-                      className="w-full px-3 py-2 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="md:w-full px-3 py-2 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
                   </div>
                   <div>
@@ -249,10 +239,10 @@ export default function User() {
                       type="number"
                       name="amount"
                       placeholder="Enter amount"
-                      className="w-full px-3 py-2 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="md:w-full px-3 py-2 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
                   </div>
-                  <button className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 hover:cursor-pointer">
+                  <button className="md:w-full px-4 bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 hover:cursor-pointer">
                     Send Money
                   </button>
                 </div>
@@ -265,57 +255,55 @@ export default function User() {
             <div>
               <h2 className="text-xl font-semibold mb-2">Cash Out</h2>
               <p className="text-gray-500 mb-4">Withdraw money from your account</p>
-            <form onSubmit={handleCashOut}>
-            <div className="space-y-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">Amount</label>
-                  <input
-                  name="amount"
-                  required
-                    type="number"
-                    placeholder="Enter amount"
-                    className="w-full px-3 py-2 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
+              <form onSubmit={handleCashOut}>
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700">Amount</label>
+                    <input
+                      name="amount"
+                      required
+                      type="number"
+                      placeholder="Enter amount"
+                      className="w-full px-3 py-2 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700">Agent Number</label>
+                    <input
+                      name="agentNumber"
+                      required
+                      type="text"
+                      placeholder="Enter agent's number"
+                      className="w-full px-3 py-2 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700">PIN</label>
+                    <input
+                      name="pinNumber"
+                      required
+                      type="password"
+                      placeholder="Enter your PIN"
+                      className="w-full px-3 py-2 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                  </div>
+                  <button className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 hover:cursor-pointer">
+                    Cash Out
+                  </button>
                 </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">Agent Number</label>
-                  <input
-                  name="agentNumber"
-                  required
-                    type="text"
-                    placeholder="Enter agent's number"
-                    className="w-full px-3 py-2 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">PIN</label>
-                  <input
-                  name="pinNumber"
-                  required
-                    type="password"
-                    placeholder="Enter your PIN"
-                    className="w-full px-3 py-2 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                </div>
-                <button className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 hover:cursor-pointer">
-                  Cash Out
-                </button>
-              </div>
-            </form>
+              </form>
             </div>
           )}
         </div>
 
-        {/* Transaction History */}
-        <div className="bg-white shadow-md rounded-lg p-6">
+       
+      </div>
+       {/* Transaction History */}
+       <div className="bg-white shadow-md rounded-lg p-6">
           <h2 className="text-xl font-semibold">Transaction History</h2>
           <p className="text-gray-500 mb-4">Your last 100 transactions</p>
-
-          <div>
-            <TransctionPage filteredTransactions={filteredTransactions} />
-          </div>
+          <TransctionPage filteredTransactions={filteredTransactions} />
         </div>
-      </div>
     </div>
   );
 }

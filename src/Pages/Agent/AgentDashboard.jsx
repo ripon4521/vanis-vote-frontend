@@ -116,7 +116,7 @@ export default function AgentDashboard() {
   return (
     <div className="max-w-6xl mx-auto py-10">
       <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold mb-6">Agent Dashboard</h1>
+        <h1 className="md:text-3xl font-bold mb-6">Agent Dashboard</h1>
         <Header />
       </div>
 
@@ -137,7 +137,7 @@ export default function AgentDashboard() {
 
         {profile?.isApproved ? (
           <div>
-            <div className="flex space-x-2 mb-4">
+            <div className="flex space-x-2 mb-4 md:flex-row flex-col">
               <button
                 className={`flex-1 border-gray-200 border rounded-lg py-2 hover:cursor-pointer  ${activeTab === 'cash-in' ? 'bg-blue-500 text-white' : ''}`}
                 onClick={() => setActiveTab('cash-in')}

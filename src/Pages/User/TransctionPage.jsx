@@ -8,9 +8,9 @@ const TransctionPage = ({ filteredTransactions }) => {
 
   return (
     <div className="px-4 py-6">
-      <div className="overflow-x-auto">
+      <div className="!overflow-x-auto ">
         {transactionsArray.length > 0 ? (
-          <table className="min-w-full bg-white border border-gray-200 table-auto">
+          <table className="table w-full bg-white border border-gray-200 table-auto">
             <thead>
               <tr className="bg-gray-100">
                 <th className="py-2 px-4 border-b text-left">Date</th>
