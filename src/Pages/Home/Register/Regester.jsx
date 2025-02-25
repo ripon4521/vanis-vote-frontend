@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { axiosPublic } from "../../../Hooks/usePublic";
 
 export default function Regester() {
   const [formData, setFormData] = useState({
@@ -11,6 +12,8 @@ export default function Regester() {
     nid: "",
     accountType: "",
   });
+
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -41,6 +44,7 @@ export default function Regester() {
     }
 
 
+
     const data = {
         name: formData.name,
       email: formData.email,
@@ -50,8 +54,33 @@ export default function Regester() {
       accountType: formData.accountType,
       balance,
     }
+if (formData.mobile.length > 11 || formData.mobile.length < 11) {
+      toast.warning("Invalid mobile number. Please enter a 11-digit number.");
+      return;
+} else if (formData.pin.length > 5 || formData.pin.length < 5) {
+    toast.warning("Invalid PIN. Please enter a 5-digit number.");
+      return;
+}else if (formData.nid.length < 10 || formData.nid.length > 17 ){
+    toast.warning("Invalid NID number. Please enter a valid digit NID number.");
+    return;
+}else if (formData.accountType == '' || formData.accountType == ''){
+    toast.warning("Please select an account type.");
+    return;
 
-    console.log(data); // Replace with form submission logic
+} 
+
+
+axiosPublic.post('/auth/register', data).then((response) => {
+    const user = response.data.data[0] ;
+
+  navigate('/')
+
+    toast.success(`Please Login  `)
+}
+      
+).catch(err => console.log(err))
+
+
   };
 
   return (

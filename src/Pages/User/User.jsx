@@ -1,7 +1,35 @@
 import { useState } from "react";
+import useUser from "../../Hooks/useUser";
 
 export default function User() {
   const [activeTab, setActiveTab] = useState("send-money");
+  const { profile, refetch } = useUser();
+  console.log(profile)
+
+
+  const handleSendMoney =async (e) => {
+    e.preventDefault();
+    const amount = e.target.amount.value;
+    const receiverNumber = e.target.phoneNumber.value;
+    const fee = 5;
+    const type= "SendMoney";
+    const transactionId= '';
+    const senderId = profile?._id;
+
+    const data = {
+        amount,
+        receiverNumber,
+        fee,
+        type,
+        transactionId,
+        senderId
+      };
+      console.log(data)
+    }
+
+  
+
+
 
   return (
     <div className="max-w-6xl mx-auto py-10">
@@ -45,11 +73,14 @@ export default function User() {
             <div >
               <h2 className="text-xl font-semibold mb-2">Send Money</h2>
               <p className="text-gray-500 mb-4">Send money to another user</p>
-              <div className="space-y-4">
+           <form onSubmit={handleSendMoney}>
+           <div className="space-y-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700">Recipient Number</label>
                   <input
+                  required
                     type="text"
+                    name="phoneNumber"
                     placeholder="Enter recipient's number"
                     className="w-full px-3 py-2 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
@@ -57,23 +88,19 @@ export default function User() {
                 <div>
                   <label className="block text-sm font-medium text-gray-700">Amount</label>
                   <input
+                  required
                     type="number"
+                    name="amount"
                     placeholder="Enter amount"
                     className="w-full px-3 py-2 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                 </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">PIN</label>
-                  <input
-                    type="password"
-                    placeholder="Enter your PIN"
-                    className="w-full px-3 py-2 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                </div>
+               
                 <button className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 hover:cursor-pointer">
                   Send Money
                 </button>
               </div>
+           </form>
             </div>
           )}
 
