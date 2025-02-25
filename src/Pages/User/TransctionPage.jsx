@@ -1,28 +1,25 @@
 /* eslint-disable react/prop-types */
 
-
 const TransctionPage = ({ filteredTransactions }) => {
-
   // Ensure transactionsData is always an array
   const transactionsArray = Array.isArray(filteredTransactions)
     ? filteredTransactions
     : [filteredTransactions];
 
   return (
-    <div className="">
-   
+    <div className="px-4 py-6">
       <div className="overflow-x-auto">
         {transactionsArray.length > 0 ? (
-          <table className="min-w-full bg-white border border-gray-200">
+          <table className="min-w-full bg-white border border-gray-200 table-auto">
             <thead>
               <tr className="bg-gray-100">
-                <th className="py-2 px-4 border-b">Date</th>
-                <th className="py-2 px-4 border-b">Type</th>
-                <th className="py-2 px-4 border-b">Amount</th>
-                <th className="py-2 px-4 border-b">Fee</th>
-                <th className="py-2 px-4 border-b">Sender</th>
-                <th className="py-2 px-4 border-b">Receiver</th>
-                <th className="py-2 px-4 border-b">Transaction ID</th>
+                <th className="py-2 px-4 border-b text-left">Date</th>
+                <th className="py-2 px-4 border-b text-left">Type</th>
+                <th className="py-2 px-4 border-b text-left">Amount</th>
+                <th className="py-2 px-4 border-b text-left">Fee</th>
+                <th className="py-2 px-4 border-b text-left">Sender</th>
+                <th className="py-2 px-4 border-b text-left">Receiver</th>
+                <th className="py-2 px-4 border-b text-left">Transaction ID</th>
               </tr>
             </thead>
             <tbody>
