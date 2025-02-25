@@ -10,18 +10,18 @@ export default function AgentDashboard() {
   const [activeTab, setActiveTab] = useState('cash-in');
   const [isProcessing, setIsProcessing] = useState(false); 
   const [showBalance, setShowBalance] = useState(false);
-  const { profile, refetch } = useUser();
-  const [transactions] = useTransaction(profile?.mobile, profile?._id);
+  const { profile  } = useUser();
+  const [transactions,refetch] = useTransaction(profile?.mobile, profile?._id);
   const transactionsData = transactions?.data;
   const filteredTransactions = transactionsData?.filter(
     (tran) =>
       tran?.senderId?._id === profile?._id || tran?.receiverNumber === profile?.mobile
   );
 
-  if (!profile) {
-    refetch();
-    return window.location.href = '/';
-  }
+  // if (!profile) {
+  //   refetch();
+  //   return window.location.href = '/';
+  // }
 
  // Add isProcessing state
 
@@ -115,12 +115,12 @@ export default function AgentDashboard() {
 
   return (
     <div className="max-w-6xl mx-auto py-10">
-      <div className="flex justify-between items-center">
-        <h1 className="md:text-3xl font-bold mb-6">Agent Dashboard</h1>
+      <div className="flex justify-between items-center md:flex-row flex-col">
+        <h1 className="text-3xl font-bold mb-6">Agent Dashboard</h1>
         <Header />
       </div>
 
-      <div className="grid gap-6">
+      <div className="grid gap-6 px-1">
         <div className="border border-gray-200 rounded-lg shadow p-6">
           <div className="mb-4">
             <h2 className="text-xl font-semibold">Balance</h2>
@@ -137,7 +137,7 @@ export default function AgentDashboard() {
 
         {profile?.isApproved ? (
           <div>
-            <div className="flex space-x-2 mb-4 md:flex-row flex-col">
+            <div className="flex space-x-2 mb-4 md:leco flex-col md:flex-row gap-2">
               <button
                 className={`flex-1 border-gray-200 border rounded-lg py-2 hover:cursor-pointer  ${activeTab === 'cash-in' ? 'bg-blue-500 text-white' : ''}`}
                 onClick={() => setActiveTab('cash-in')}
@@ -197,14 +197,15 @@ export default function AgentDashboard() {
           <h1 className='text-center text-red-500 font-semibold'>Wait for agent approval</h1>
         )}
 
-        <div className="border rounded-lg shadow p-6 border-gray-200 ">
+    
+      </div>
+      <div className="border rounded-lg shadow p-6 border-gray-200 mt-4 px-1 ">
           <h2 className="text-xl font-semibold mb-2">Transaction History</h2>
           <p className="text-sm text-gray-500 mb-4">Your last 100 transactions</p>
           <div>
             <TransctionPage filteredTransactions={filteredTransactions} />
           </div>
         </div>
-      </div>
     </div>
   );
 }
