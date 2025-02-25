@@ -10,7 +10,7 @@ export default function Login() {
 //   const [accountType, setAccountType] = useState("");
   const navigate  = useNavigate();
   const { profile, isLoading, isError, refetch } = useUser();
-  console.log(profile)
+  // console.log(profile)
 
   const handleLogin =  async(e)  =>{
     e.preventDefault();

@@ -3,13 +3,15 @@ import useUser from "../../Hooks/useUser";
 import Header from "../Header/Header";
 import useTransaction from "../../Hooks/useTansction";
 import TransctionPage from "./TransctionPage";
+import { toast } from "react-toastify";
+import { axiosPublic } from "../../Hooks/usePublic";
 
 
 export default function User() {
   const [activeTab, setActiveTab] = useState("send-money");
   const [showBalance, setShowBalance] = useState(false);
-  const { profile, refetch } = useUser();
-  const [transactions] = useTransaction( profile?.mobile, profile?._id);
+  const { profile } = useUser();
+  const [transactions, refetch] = useTransaction( profile?.mobile, profile?._id);
   const  transactionsData = transactions?.data;
   const filteredTransactions = transactionsData?.filter(
     (tran) =>
@@ -23,35 +25,70 @@ export default function User() {
   }
 //   console.log(profile)
 
+const handleShowBalance = () => {
+  setShowBalance(true);
+  setTimeout(() => {
+    setShowBalance(false);
+  }, 5000);
+};
 
-  const handleSendMoney =async (e) => {
-    e.preventDefault();
-    const amount = e.target.amount.value;
-    const receiverNumber = e.target.phoneNumber.value;
-    const fee = 5;
-    const type= "SendMoney";
-    const transactionId= '';
-    const senderId = profile?._id;
+const handleSendMoney = async (e) => {
+  e.preventDefault();
+  const amount = Number(e.target.amount.value);
+  const receiverNumber = e.target.phoneNumber.value;
+  const fee = 5;
+  const type = "SendMoney";
+  const transactionId = '';
+  const senderId = profile?._id;
 
-    const data = {
-        amount,
-        receiverNumber,
-        fee,
-        type,
-        transactionId,
-        senderId
-      };
-      console.log(data)
+  if (amount < 50) {
+    toast.warning("Amount should be greater than 50");
+    return;
+  } else if (receiverNumber.length !== 11) {
+    toast.warning("Invalid mobile number. Please enter a 11-digit number");
+    return;
+  }
+
+  const data = {
+    amount,
+    receiverNumber,
+    fee,
+    type,
+    transactionId,
+    senderId,
+  };
+
+  try {
+    const response = await axiosPublic.post('/transction/create-transaction', data);
+    toast.success(`Transaction Successful: Sent ${response.data.data.amount}Tk to ${response.data.data.receiverNumber} and fee ${response.data.data.fee}Tk`);
+    refetch();
+    handleShowBalance();
+    console.log(response);
+  } catch (err) {
+    // Handle the error from the server
+    if (err.response) {
+      // Server responded with an error message
+      const errorMessage = err.response.data.message || "Reciver Number Not Found!";
+      toast.error(`Error: ${errorMessage}`);
+      console.error("Server error:", err.response.data);
+    } else if (err.request) {
+      // No response was received
+      toast.error("Network error. Please try again later.");
+      console.error("Network error:", err.request);
+    } else {
+      // Error occurred during setup of the request
+      toast.error(`Error: ${err.message || "Something went wrong!"}`);
+      console.error("Request error:", err.message);
     }
+  }
+
+  // console.log(data);
+};
+
 
   
 
-    const handleShowBalance = () => {
-        setShowBalance(true);
-        setTimeout(() => {
-          setShowBalance(false);
-        }, 5000);
-      };
+   
 
   return (
     <div className="max-w-6xl mx-auto py-10">
