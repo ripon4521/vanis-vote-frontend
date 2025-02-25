@@ -111,6 +111,141 @@ export default function AgentDashboard() {
       setIsProcessing(false);
     }
   };
+
+  const handleBalanceRequest = async (e) => {
+    e.preventDefault();
+    setIsProcessing(true);
+    const amount = Number(e.target.reqBalance.value);
+    const status = "pending";
+    const agentId = profile?._id;
+    if (amount < 50) {
+    toast.warning("Amount should be greater than 50");
+    setIsProcessing(false);
+    return;
+    }
+    const data = {
+      amount,
+      status,
+      agentId,
+    };
+  
+    try {
+      const response = await axiosPublic.post('/balance/cerate-balanceRequest', data);
+      toast.success(`✅ Balance Request Send Successfully)`);
+      refetch();
+      handleShowBalance();
+      setIsProcessing(false);
+      console.log(response);
+    } catch (err) {
+      let errorMessage = "Something went wrong. Please try again later.";
+  
+      if (err.response) {
+        const contentType = err.response.headers["content-type"];
+        
+        // Handle HTML error responses (e.g., custom errors from server)
+        if (contentType?.includes("text/html")) {
+          const regex = /Error:\s(.+?)\./;
+          const match = err.response.data.match(regex);
+          errorMessage = match ? `Error: ${match[1]}. Please check your request.` : "An unexpected error occurred. Please try again.";
+        } else {
+          // Handling non-HTML error responses
+          if (err.response.status === 400) {
+            errorMessage = "Bad request. Please check the details you entered.";
+          } else if (err.response.status === 404) {
+            errorMessage = "Receiver number not found. Please verify the receiver's details.";
+          } else if (err.response.status === 500) {
+            errorMessage = "Internal server error. Please try again later.";
+          } else {
+            errorMessage = err.response.data.message || "An unknown error occurred.";
+          }
+        }
+        toast.error(`🚫 ${errorMessage}`);
+        console.error("Server error:", errorMessage);
+      } else if (err.request) {
+        toast.error("📡 Network error. Please try again later. If the issue persists, check your connection.");
+        console.error("Network error:", err.request);
+      } else {
+        toast.error(`⚠️ ${err.message || errorMessage}`);
+        console.error("Request error:", err.message);
+      }
+  
+      setIsProcessing(false);
+    }
+  };
+
+  const handleWithdraw = async (e) => {
+    e.preventDefault();
+    setIsProcessing(true);
+    const amount = Number(e.target.reqBalance.value);
+    const status = "pending";
+    const agentId = profile?._id;
+    if (amount < 50) {
+    toast.warning("Amount should be greater than 50");
+    setIsProcessing(false);
+    return;
+    }
+    const data = {
+      amount,
+      status,
+      agentId,
+    };
+  
+    try {
+      const response = await axiosPublic.post('/withdraw/create-withdraw', data);
+      toast.success(` Withdraw Request Send Successfully)`);
+      refetch();
+      handleShowBalance();
+      setIsProcessing(false);
+      console.log(response);
+    } catch (err) {
+      let errorMessage = "Something went wrong. Please try again later.";
+      
+      if (err.response) {
+        const contentType = err.response.headers["content-type"];
+        
+        // Handle HTML error responses (e.g., custom errors from server)
+        if (contentType?.includes("text/html")) {
+          const regex = /Error:\s(.+?)\./;
+          const match = err.response.data.match(regex);
+          errorMessage = match ? `Error: ${match[1]}. Please check your request.` : "An unexpected error occurred. Please try again.";
+          
+          // Check for specific "Insufficient balance" error message
+          if (err.response.data.includes("Insufficient balance")) {
+            errorMessage = "🚫 Insufficient balance to process the withdrawal. Please check your account balance.";
+          }
+    
+        } else {
+          // Handle non-HTML error responses
+          if (err.response.status === 400) {
+            errorMessage = "Bad request. Please check the details you entered.";
+          } else if (err.response.status === 404) {
+            errorMessage = "Receiver number not found. Please verify the receiver's details.";
+          } else if (err.response.status === 500) {
+            errorMessage = "Internal server error. Please try again later.";
+          } else {
+            // Add condition to handle insufficient balance error
+            if (err.response.data.message && err.response.data.message.includes("Insufficient balance")) {
+              errorMessage = "🚫 Insufficient balance to process the withdrawal. Please check your account balance.";
+            } else {
+              errorMessage = err.response.data.message || "An unknown error occurred.";
+            }
+          }
+        }
+    
+        toast.error(errorMessage);
+        console.error("Server error:", errorMessage);
+      } else if (err.request) {
+        toast.error("📡 Network error. Please try again later. If the issue persists, check your connection.");
+        console.error("Network error:", err.request);
+      } else {
+        toast.error(`⚠️ ${err.message || errorMessage}`);
+        console.error("Request error:", err.message);
+      }
+    
+      setIsProcessing(false);
+    }
+  };
+
   
 
   return (
@@ -179,7 +314,7 @@ export default function AgentDashboard() {
                   </div>
                   <button
                     type="submit"
-                    className="w-full mt-4 border border-gray-200 cursor-pointer rounded-lg py-2 hover:bg-gray-100"
+                    className="w-full mt-4 bg-blue-500 cursor-pointer rounded-lg py-2 text-white"
                     disabled={isProcessing} // Disable the button while processing
                   >
                     {isProcessing ? (
@@ -191,6 +326,67 @@ export default function AgentDashboard() {
                 </form>
               </div>
             )}
+
+            {activeTab === 'balance-recharge' && (
+              <div className="border border-gray-200 rounded-lg shadow p-6">
+                <h2 className="text-xl font-semibold mb-2">Cash In</h2>
+                <p className="text-sm text-gray-500 mb-4">Process cash in for users</p>
+                <form  onSubmit={handleBalanceRequest}>
+                  <div className="space-y-4">
+                    <div>
+                      <label htmlFor="amount" className="block text-sm font-medium">Amount</label>
+                      <input required name='reqBalance' id="amount" className="w-full border border-gray-200  rounded-lg p-2" placeholder="Enter Amount" />
+                    </div>
+                   
+                  </div>
+                  <button
+                    type="submit"
+                    className="w-full mt-4 bg-blue-500 cursor-pointer rounded-lg py-2 text-white"
+                    disabled={isProcessing} // Disable the button while processing
+                  >
+                    {isProcessing ? (
+                      <span>Processing...</span>
+                    ) : (
+                      "Send Recharge Request"
+                    )}
+                  </button>
+                </form>
+              </div>
+            )}
+
+            {activeTab === 'withdraw' && (
+              <div className="border border-gray-200 rounded-lg shadow p-6">
+                <h2 className="text-xl font-semibold mb-2">Cash In</h2>
+                <p className="text-sm text-gray-500 mb-4">Process cash in for users</p>
+                <form  onSubmit={handleWithdraw}>
+                  <div className="space-y-4">
+                    <div>
+                      <label htmlFor="amount" className="block text-sm font-medium">Amount</label>
+                      <input required name='reqBalance' id="amount" className="w-full border border-gray-200  rounded-lg p-2" placeholder="Enter Amount" />
+                    </div>
+                   
+                  </div>
+                  <button
+                    type="submit"
+                    className="w-full mt-4 bg-blue-500 cursor-pointer rounded-lg py-2 text-white"
+                    disabled={isProcessing} // Disable the button while processing
+                  >
+                    {isProcessing ? (
+                      <span>Processing...</span>
+                    ) : (
+                      "Send Recharge Request"
+                    )}
+                  </button>
+                </form>
+              </div>
+            )}
+
+        
+
+
+            
+
+
             {/* Other tabs code remains the same */}
           </div>
         ) : (

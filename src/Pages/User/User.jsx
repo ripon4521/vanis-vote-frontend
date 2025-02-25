@@ -197,105 +197,108 @@ export default function User() {
           )}
         </div>
 
-        {/* Tabs Section */}
-        <div className="bg-white shadow-md rounded-lg p-6 col-span-1 md:col-span-2 lg:col-span-3">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-2 mb-4">
-            <button
-              onClick={() => setActiveTab("send-money")}
-              className={`py-2 rounded-md ${activeTab === "send-money" ? "bg-blue-500 text-white" : "bg-gray-200 cursor-pointer"}`}
-            >
+{
+  profile?.isBlocked === false ?    
+  <div className="bg-white shadow-md rounded-lg p-6 col-span-1 md:col-span-2 lg:col-span-3">
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-2 mb-4">
+      <button
+        onClick={() => setActiveTab("send-money")}
+        className={`py-2 rounded-md ${activeTab === "send-money" ? "bg-blue-500 text-white" : "bg-gray-200 cursor-pointer"}`}
+      >
+        Send Money
+      </button>
+
+      <button
+        onClick={() => setActiveTab("cash-out")}
+        className={`py-2 rounded-md ${activeTab === "cash-out" ? "bg-blue-500 text-white" : "bg-gray-200 cursor-pointer"}`}
+      >
+        Cash Out
+      </button>
+    </div>
+
+  
+    {activeTab === "send-money" && (
+      <div>
+        <h2 className="text-xl font-semibold mb-2">Send Money</h2>
+        <p className="text-gray-500 mb-4">Send money to another user</p>
+        <form onSubmit={handleSendMoney}>
+          <div className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Recipient Number</label>
+              <input
+                required
+                type="text"
+                name="phoneNumber"
+                placeholder="Enter recipient's number"
+                className="md:w-full px-3 py-2 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Amount</label>
+              <input
+                required
+                type="number"
+                name="amount"
+                placeholder="Enter amount"
+                className="md:w-full px-3 py-2 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+            <button className="md:w-full px-4 bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 hover:cursor-pointer">
               Send Money
             </button>
+          </div>
+        </form>
+      </div>
+    )}
 
-            <button
-              onClick={() => setActiveTab("cash-out")}
-              className={`py-2 rounded-md ${activeTab === "cash-out" ? "bg-blue-500 text-white" : "bg-gray-200 cursor-pointer"}`}
-            >
+   
+    {activeTab === "cash-out" && (
+      <div>
+        <h2 className="text-xl font-semibold mb-2">Cash Out</h2>
+        <p className="text-gray-500 mb-4">Withdraw money from your account</p>
+        <form onSubmit={handleCashOut}>
+          <div className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Amount</label>
+              <input
+                name="amount"
+                required
+                type="number"
+                placeholder="Enter amount"
+                className="w-full px-3 py-2 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Agent Number</label>
+              <input
+                name="agentNumber"
+                required
+                type="text"
+                placeholder="Enter agent's number"
+                className="w-full px-3 py-2 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700">PIN</label>
+              <input
+                name="pinNumber"
+                required
+                type="password"
+                placeholder="Enter your PIN"
+                className="w-full px-3 py-2 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+            <button className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 hover:cursor-pointer">
               Cash Out
             </button>
           </div>
+        </form>
+      </div>
+    )}
+  </div> : <h1 className="text-center text-red-500 font-semibold">User is Blocked By Admin</h1>
 
-          {/* Send Money Tab */}
-          {activeTab === "send-money" && (
-            <div>
-              <h2 className="text-xl font-semibold mb-2">Send Money</h2>
-              <p className="text-gray-500 mb-4">Send money to another user</p>
-              <form onSubmit={handleSendMoney}>
-                <div className="space-y-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700">Recipient Number</label>
-                    <input
-                      required
-                      type="text"
-                      name="phoneNumber"
-                      placeholder="Enter recipient's number"
-                      className="md:w-full px-3 py-2 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700">Amount</label>
-                    <input
-                      required
-                      type="number"
-                      name="amount"
-                      placeholder="Enter amount"
-                      className="md:w-full px-3 py-2 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    />
-                  </div>
-                  <button className="md:w-full px-4 bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 hover:cursor-pointer">
-                    Send Money
-                  </button>
-                </div>
-              </form>
-            </div>
-          )}
-
-          {/* Cash Out Tab */}
-          {activeTab === "cash-out" && (
-            <div>
-              <h2 className="text-xl font-semibold mb-2">Cash Out</h2>
-              <p className="text-gray-500 mb-4">Withdraw money from your account</p>
-              <form onSubmit={handleCashOut}>
-                <div className="space-y-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700">Amount</label>
-                    <input
-                      name="amount"
-                      required
-                      type="number"
-                      placeholder="Enter amount"
-                      className="w-full px-3 py-2 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700">Agent Number</label>
-                    <input
-                      name="agentNumber"
-                      required
-                      type="text"
-                      placeholder="Enter agent's number"
-                      className="w-full px-3 py-2 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700">PIN</label>
-                    <input
-                      name="pinNumber"
-                      required
-                      type="password"
-                      placeholder="Enter your PIN"
-                      className="w-full px-3 py-2 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    />
-                  </div>
-                  <button className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 hover:cursor-pointer">
-                    Cash Out
-                  </button>
-                </div>
-              </form>
-            </div>
-          )}
-        </div>
-
+}
+    
        
       </div>
        {/* Transaction History */}
