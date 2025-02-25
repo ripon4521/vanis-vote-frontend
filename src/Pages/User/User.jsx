@@ -1,10 +1,27 @@
 import { useState } from "react";
 import useUser from "../../Hooks/useUser";
+import Header from "../Header/Header";
+import useTransaction from "../../Hooks/useTansction";
+import TransctionPage from "./TransctionPage";
+
 
 export default function User() {
   const [activeTab, setActiveTab] = useState("send-money");
+  const [showBalance, setShowBalance] = useState(false);
   const { profile, refetch } = useUser();
-  console.log(profile)
+  const [transactions] = useTransaction( profile?.mobile, profile?._id);
+  const  transactionsData = transactions?.data;
+  const filteredTransactions = transactionsData?.filter(
+    (tran) =>
+      tran?.senderId?._id === profile?._id || tran?.receiverNumber === profile?.mobile
+  );
+
+
+  if (!profile) {
+    refetch();
+    return window.location.href('/');
+  }
+//   console.log(profile)
 
 
   const handleSendMoney =async (e) => {
@@ -29,22 +46,37 @@ export default function User() {
 
   
 
-
+    const handleShowBalance = () => {
+        setShowBalance(true);
+        setTimeout(() => {
+          setShowBalance(false);
+        }, 5000);
+      };
 
   return (
     <div className="max-w-6xl mx-auto py-10">
-      <h1 className="text-3xl font-bold mb-6">User Dashboard</h1>
+          <div className="flex justify-between items-center">
+          <h1 className="text-3xl font-bold mb-6 ">User Dashboard     </h1>
+          <Header/>
+      
+          </div>
+      
       <div className="grid gap-6">
 
         {/* Balance Card */}
-        <div className="bg-white shadow-md rounded-lg p-6">
-          <h2 className="text-xl font-semibold">Balance</h2>
-          <p className="text-gray-500 mb-4">Click to reveal your balance</p>
-          <button className="w-full px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-100">
-            Show Balance
-          </button>
+        <div className="border border-gray-200 rounded-lg shadow p-6">
+          <div className="mb-4">
+            <h2 className="text-xl font-semibold">Balance</h2>
+            <p className="text-sm text-gray-500">Click to reveal your balance and income</p>
+          </div>
+          {showBalance ? (
+            <p className="text-lg font-semibold"><span className="text-red-500">{profile?.balance}</span> Tk</p>
+          ) : (
+            <button className="w-full border  border-gray-200 cursor-pointer rounded-lg py-2 hover:bg-gray-100" onClick={handleShowBalance}>
+              Show Balance and Income
+            </button>
+          )}
         </div>
-
         {/* Tabs Section */}
         <div className="bg-white shadow-md rounded-lg p-6">
           <div className="grid grid-cols-3 gap-2 mb-4">
@@ -174,9 +206,15 @@ export default function User() {
         {/* Transaction History */}
         <div className="bg-white shadow-md rounded-lg p-6">
           <h2 className="text-xl font-semibold">Transaction History</h2>
-          <p className="text-gray-500 mb-4">Your last 10 transactions</p>
-          {/* Replace this with a table or list for transactions */}
-          <p className="text-gray-400">Transaction history will be displayed here.</p>
+          <p className="text-gray-500 mb-4">Your last 100 transactions</p>
+
+          <div>
+           
+            <TransctionPage filteredTransactions={filteredTransactions}/>
+          </div>
+       
+        
+      
         </div>
       </div>
     </div>

@@ -1,10 +1,12 @@
 import { useState } from "react";
+import Header from "../Header/Header";
 
 export default function AdminDashboard() {
   const [activeTab, setActiveTab] = useState("user-management");
 
   return (
     <div className="container mx-auto py-10">
+             <Header/>
       <h1 className="text-3xl font-bold mb-6">Admin Dashboard</h1>
       
       {/* Tabs */}

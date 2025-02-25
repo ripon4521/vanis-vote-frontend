@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import useUser from '../../Hooks/useUser';
+import Header from '../Header/Header';
 
 export default function AgentDashboard() {
   const [activeTab, setActiveTab] = useState('cash-in');
@@ -22,6 +23,7 @@ export default function AgentDashboard() {
 
   return (
     <div className="max-w-6xl mx-auto py-10">
+             <Header/>
       <h1 className="text-3xl font-bold mb-6">Agent Dashboard</h1>
       <div className="grid gap-6">
         <div className="border border-gray-200 rounded-lg shadow p-6">
