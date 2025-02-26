@@ -6,6 +6,8 @@ import useTransaction from "../../Hooks/useTansction";
 import TransctionPage from "../User/TransctionPage";
 import { axiosPublic } from "../../Hooks/usePublic";
 import { toast } from "react-toastify";
+import TransctionMonitor from "./TransctionMonitor/TransctionMonitor";
+import TransctionTable from "./TransctionMonitor/TransctionTable";
 
 export default function AdminDashboard() {
   const { profile  } = useUser();
@@ -18,7 +20,10 @@ export default function AdminDashboard() {
   const [transactions] = useTransaction(profile?.mobile, profile?._id);
   const transactionsData = transactions?.data;
   const [filteredTransactions, setfilteredTransactions] = useState();
- 
+  // console.log(allUsers)
+  const allAgents = allUsers?.data?.filter(use => use?.accountType === 'agent');
+  // console.log(allAgents)
+
 
   // console.log(allUsers?.data)
  
@@ -81,6 +86,23 @@ export default function AdminDashboard() {
  
 };
 
+
+const handleAgentApproved = async(_id) => {
+
+  axiosPublic.patch(`/user/${_id}`, { isApproved: true }).then((response) => {
+    console.log(response)
+    toast.success('Agent approved ');
+    refetch();
+  }).catch((error) => console.log(error))
+}
+
+const handleRejectedApproval = async(_id) => {
+  axiosPublic.patch(`/user/${_id}`, { isRejected: true }).then((response) => {
+    console.log(response)
+    toast.success('Agent rejected ');
+    refetch();
+  }).catch((error) => console.log(error))
+}
   
 
 
@@ -98,7 +120,7 @@ export default function AdminDashboard() {
             <p className="text-sm text-gray-500">Click to reveal your balance and income</p>
           </div>
           {showBalance ? (
-            <p className="text-lg font-semibold"><span className='text-red-500'>{profile?.balance}</span> Tk</p>
+            <p className="text-lg font-semibold"><span className='text-red-500'>{profile?.balance.toFixed(2)}</span> Tk</p>
           ) : (
             <button className="w-full border  border-gray-200 cursor-pointer rounded-lg py-2 hover:bg-gray-100" onClick={handleShowBalance}>
               Show Balance and Income
@@ -253,14 +275,68 @@ export default function AdminDashboard() {
             <h2 className="text-xl font-bold mb-4">Agent Approval</h2>
             <div className="space-y-4">
               <p>Pending agent requests will be displayed here.</p>
-              <div className="flex space-x-2 mt-4">
-                <button className="bg-green-500 text-white py-2 px-4 rounded-md">
-                  Approve
-                </button>
-                <button className="bg-red-500 text-white py-2 px-4 rounded-md">
-                  Reject
-                </button>
-              </div>
+            
+              <div className="mt-4 overflow-x-auto">
+  <table className="min-w-full table-auto">
+    <thead>
+      <tr className="border-b border-gray-200">
+        <th className="py-2 px-4 text-left">Name</th>
+        <th className="py-2 px-4 text-left">Phone</th>
+        <th className="py-2 px-4 text-left">Role</th>
+        <th className="py-2 px-4 text-left">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {
+        allAgents?.map((user, index) => {
+          return (
+            <tr key={index} className="border-b border-gray-200">
+              <td className="py-2 px-4">{user?.name}</td>
+              <td className="py-2 px-4">{user?.mobile}</td>
+              <td className="py-2 px-4">{user?.accountType}</td>
+              {
+                user?.isApproved === true ? <td> <button className="bg-gray-200 py-1 px-3 rounded-md cursor-not-allowed">
+              Approved
+              </button></td> :               <td className="py-2 px-4 flex">
+  {user?.isRejected === false ? (
+    <>
+      <button
+        onClick={() => handleAgentApproved(user?._id)}
+        className="bg-green-500 text-white py-1 px-3 rounded-md mr-2 cursor-pointer"
+      >
+        Approved
+      </button>
+
+      <button
+        onClick={() => handleRejectedApproval(user?._id)}
+        className="bg-red-500 text-white py-1 px-3 rounded-md cursor-pointer"
+      >
+        Rejected
+      </button>
+    </>
+  ) : (
+    <button className="bg-gray-200 py-1 px-3 rounded-md cursor-not-allowed">
+     Rejected
+    </button>
+  )}
+</td>
+              }
+
+
+
+
+
+            
+            </tr>
+          );
+        })
+      }
+    </tbody>
+  </table>
+</div>
+             
+                
+            
             </div>
           </div>
         </div>
@@ -268,16 +344,10 @@ export default function AdminDashboard() {
 
       {activeTab === "transaction-monitoring" && (
         <div>
-          <div className="bg-white shadow-md rounded-lg p-6 mb-6">
-            <h2 className="text-xl font-bold mb-4">Transaction Monitoring</h2>
-            <div className="space-y-4">
-              <div>
-                <h3 className="text-lg font-semibold">Total System Balance</h3>
-                <p className="text-2xl font-bold">৳ 0</p>
-              </div>
-              <p>Transaction list will be displayed here.</p>
-            </div>
-          </div>
+       <TransctionMonitor/>
+     <div className="my-5">
+     <TransctionTable transactionsData={transactionsData} />
+     </div>
         </div>
       )}
 

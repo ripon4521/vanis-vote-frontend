@@ -10,6 +10,7 @@ import Private from "../Private/Private";
 import Unauthorized from "../Pages/Unauthorized/Unauthorized";
 import UserPrivate from "../Private/UserPrivate";
 import AgentPrivate from "../Private/AgentPrivate";
+import ViewTransctionDetails from "../Pages/Admin/TransctionMonitor/ViewTransctionDetails";
 
 
 
@@ -37,6 +38,9 @@ export const router = createBrowserRouter([
             },{
                 path:'/admin-dashboard',
                 element:<Private><AdminDashboard/></Private>
+            },{
+                path:`/admin-dashboard/transction-details/:id`,
+                element:<Private><ViewTransctionDetails/></Private>
             }
           
         ]
