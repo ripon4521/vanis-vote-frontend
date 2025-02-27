@@ -28,5 +28,5 @@ To set up the project on your local machine, follow these steps:
 Clone the repository to your local machine using the following command:
 
 ```bash
-git clone https://github.com/your-username/react-tailwind-template.git
-cd react-tailwind-template
+git clone https://github.com/ripon4521/simple-mfs-frontend.git
+cd simple-mfs-frontend
