@@ -8,6 +8,9 @@ import { axiosPublic } from "../../Hooks/usePublic";
 import { toast } from "react-toastify";
 import TransctionMonitor from "./TransctionMonitor/TransctionMonitor";
 import TransctionTable from "./TransctionMonitor/TransctionTable";
+import WithdrawAndRecharge from "./Withdraw&Recharge/WithdrawandRecharge";
+import useGetNotification from "../../Hooks/useGetNotification";
+import AdminNotification from "../Header/AdminNotification";
 
 export default function AdminDashboard() {
   const { profile  } = useUser();
@@ -18,6 +21,7 @@ export default function AdminDashboard() {
   const [isModalOpen, setIsModalOpen] = useState(false); // State for modal visibility
   const [selectedUser, setSelectedUser] = useState(null);
   const [transactions] = useTransaction(profile?.mobile, profile?._id);
+
   const transactionsData = transactions?.data;
   const [filteredTransactions, setfilteredTransactions] = useState();
   // console.log(allUsers)
@@ -112,7 +116,7 @@ const handleRejectedApproval = async(_id) => {
  <div className="flex justify-between items-center md:flex-row flex-col ">
 
  <h1 className="text-3xl font-bold mb-6 ">Admin Dashboard</h1>
- <Header/>
+<AdminNotification/>
  </div>
  <div className="border border-gray-200 rounded-lg shadow p-6">
           <div className="mb-4">
@@ -353,20 +357,7 @@ const handleRejectedApproval = async(_id) => {
 
       {activeTab === "recharge-withdraw" && (
         <div>
-          <div className="bg-white shadow-md rounded-lg p-6 mb-6">
-            <h2 className="text-xl font-bold mb-4">Recharge & Withdraw Requests</h2>
-            <div className="space-y-4">
-              <p>Recharge and withdraw requests will be displayed here.</p>
-              <div className="flex space-x-2 mt-4">
-                <button className="bg-green-500 text-white py-2 px-4 rounded-md">
-                  Approve
-                </button>
-                <button className="bg-red-500 text-white py-2 px-4 rounded-md">
-                  Reject
-                </button>
-              </div>
-            </div>
-          </div>
+          <WithdrawAndRecharge/>
         </div>
 
 

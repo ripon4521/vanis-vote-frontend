@@ -1,22 +1,16 @@
 import { User, Bell } from "lucide-react";
 import useUser from "../../Hooks/useUser";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import useGetNotification from "../../Hooks/useGetNotification";
 
-import useTransaction from "../../Hooks/useTansction";
-
-export function Header() {
+export function AdminNotification() {
     const { profile, refetch } = useUser();
     const navigate = useNavigate();
     const [isNotificationOpen, setIsNotificationOpen] = useState(false);
-
-    const [transactions] = useTransaction(profile?.mobile, profile?._id);
-    const transactionsData = transactions?.data;
-    const filteredTransactions = transactionsData?.filter(
-        (tran) =>
-            tran?.receiverNumber === profile?.mobile
-    );
-    const sorted = filteredTransactions?.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+    const [notifications] = useGetNotification();
+    const notificationData = notifications?.data;
+    const [latestNotification, setLatestNotification] = useState(null);
 
     const handleLogout = () => {
         localStorage.removeItem("token");
@@ -29,12 +23,19 @@ export function Header() {
         setIsNotificationOpen(!isNotificationOpen);
     };
 
+    // Set the latest notification to be displayed in the marquee
+    useEffect(() => {
+        if (notificationData && notificationData.length > 0) {
+            setLatestNotification(notificationData[0]); // Assuming the latest notification is at the top
+        }
+    }, [notificationData]);
+
     return (
-        <header className="">
+        <header>
             <div className="container mx-auto flex h-16 items-center justify-between px-4">
-                {sorted && sorted.length > 0 && (
+                {latestNotification && (
                     <marquee className="border-green-400 text-green-700 rounded-lg animate-bounce">
-                        {`${sorted[0]?.type}  ৳${sorted[0]?.amount} from ${sorted[0]?.senderId?.mobile}`}
+                    {` ${latestNotification?.agentId.name} request for ${latestNotification?.type } `}
                     </marquee>
                 )}
                 <div className="flex items-center gap-4">
@@ -45,9 +46,13 @@ export function Header() {
                         </button>
                         <div className="absolute right-0 mt-2 w-48 bg-white border rounded-md shadow-lg opacity-0 group-hover:opacity-100 transition-opacity">
                             <div className="px-4 py-2 font-semibold border-b">{profile?.name}</div>
-                            <a href="/profile" className="block px-4 py-2 hover:bg-gray-100">Type: <span className="text-red-500 uppercase">{profile?.accountType}</span></a>
+                            <a href="/profile" className="block px-4 py-2 hover:bg-gray-100">
+                                Type: <span className="text-red-500 uppercase">{profile?.accountType}</span>
+                            </a>
                             <div className="border-t"></div>
-                            <button onClick={handleLogout} className="w-full text-left px-4 py-2 hover:bg-gray-100">Logout</button>
+                            <button onClick={handleLogout} className="w-full text-left px-4 py-2 hover:bg-gray-100">
+                                Logout
+                            </button>
                         </div>
                     </div>
 
@@ -60,10 +65,11 @@ export function Header() {
                             <div className="absolute right-0 mt-2 w-64 bg-white border rounded-md shadow-lg z-10">
                                 <div className="px-4 py-2 font-semibold border-b">Notifications</div>
                                 <div className="max-h-48 overflow-y-auto">
-                                    {sorted?.length > 0 ? (
-                                        sorted?.map((notif) => (
+                                    {notificationData?.length > 0 ? (
+                                        notificationData.map((notif) => (
                                             <div key={notif._id} className="p-2 border-b text-gray-700">
-                                                💸 {notif.senderId.mobile} {notif.type} ৳{notif.amount}
+                                                {notif.type === "withdrawal" ? "💸" : "📩"}{" "}
+                                                {notif.agentId?.mobile} - {notif.message}
                                             </div>
                                         ))
                                     ) : (
@@ -71,7 +77,9 @@ export function Header() {
                                     )}
                                 </div>
                                 <div className="border-t"></div>
-                                <button onClick={toggleNotification} className="w-full text-center px-4 py-2 hover:bg-gray-100">Close</button>
+                                <button onClick={toggleNotification} className="w-full text-center px-4 py-2 hover:bg-gray-100">
+                                    Close
+                                </button>
                             </div>
                         )}
                     </div>
@@ -81,4 +89,4 @@ export function Header() {
     );
 }
 
-export default Header;
+export default AdminNotification;

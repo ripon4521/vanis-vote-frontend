@@ -5,6 +5,7 @@ import useTransaction from '../../Hooks/useTansction';
 import TransctionPage from '../User/TransctionPage';
 import { toast } from 'react-toastify';
 import { axiosPublic } from '../../Hooks/usePublic';
+import AgentNotification from '../Header/AgentNotification';
 
 export default function AgentDashboard() {
   const [activeTab, setActiveTab] = useState('cash-in');
@@ -252,7 +253,7 @@ export default function AgentDashboard() {
     <div className="max-w-6xl mx-auto py-10">
       <div className="flex justify-between items-center md:flex-row flex-col">
         <h1 className="text-3xl font-bold mb-6">Agent Dashboard</h1>
-        <Header />
+      <AgentNotification/>
       </div>
 
       <div className="grid gap-6 px-1">
@@ -381,13 +382,16 @@ export default function AgentDashboard() {
               </div>
             )}
 
-        
+<div className="border rounded-lg shadow p-6 border-gray-200 mt-4 px-1 ">
+          <h2 className="text-xl font-semibold mb-2">Transaction History</h2>
+          <p className="text-sm text-gray-500 mb-4">Your last 100 transactions</p>
+          <div>
+            <TransctionPage filteredTransactions={filteredTransactions} />
+          </div>
+        </div>
 
 
-            
-
-
-            {/* Other tabs code remains the same */}
+           
           </div>
         ) : (
           <h1 className='text-center text-red-500 font-semibold'>Wait for agent approval</h1>
@@ -395,13 +399,7 @@ export default function AgentDashboard() {
 
     
       </div>
-      <div className="border rounded-lg shadow p-6 border-gray-200 mt-4 px-1 ">
-          <h2 className="text-xl font-semibold mb-2">Transaction History</h2>
-          <p className="text-sm text-gray-500 mb-4">Your last 100 transactions</p>
-          <div>
-            <TransctionPage filteredTransactions={filteredTransactions} />
-          </div>
-        </div>
+    
     </div>
   );
 }

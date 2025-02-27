@@ -9,7 +9,7 @@ export default function ViewTransactionDetails() {
 
   // Find the specific transaction by ID
   const transaction = transactionsData.find((t) => t._id === id);
-  console.log(transaction)
+//   console.log(transaction)
 
   if (!transaction) {
     return (
