@@ -30,3 +30,21 @@ Clone the repository to your local machine using the following command:
 ```bash
 git clone https://github.com/ripon4521/simple-mfs-frontend.git
 cd simple-mfs-frontend
+
+## Admin Details (Environment Variables)
+- **Admin Mobile**: Use an environment variable like `ADMIN_MOBILE` to store the admin’s mobile number.
+- **Admin Password**: Store the admin's password securely using a hashed value. Use environment variables like `ADMIN_PASSWORD` for the password.
+
+## User Details (Environment Variables)
+- **User Mobile**: Use an environment variable like `USER_MOBILE` to store the user's mobile number.
+- **User Password**: Store the user’s password securely using a hashed value. Use environment variables like `USER_PASSWORD` for the password.
+
+### Example .env file
+
+```env
+ADMIN_MOBILE=01788829796
+ADMIN_PASSWORD=12345
+USER_MOBILE=01302188446
+USER_PASSWORD=12345
+AGENT_MOBILE=01728005748
+AGENT_PASSWORD=12345
