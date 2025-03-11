@@ -58,9 +58,16 @@ const CreatePollForm = () => {
       };
 
       axiosPublic.post('/polls/create-polls', input).then(response => {
-        console.log(response)
+      const isPrivate=( JSON.parse(response?.config?.data))
+      console.log(isPrivate)
+ 
         toast.success("Poll created successfully!");
-        navigate('/polls/fakePoll')
+        if (isPrivate.isPrivate === true) {
+          navigate('/private-polls')
+        }else{
+          navigate('/polls')
+        }
+      
       }).catch(err => {
         console.log(err)
       })

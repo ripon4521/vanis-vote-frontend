@@ -5,18 +5,27 @@ import { Link } from "react-router-dom";
 import { axiosPublic } from "../../../Hooks/usePublic";
 import { toast } from "react-toastify";
 import useGetAllPolls from "../../../Hooks/useGetAllPolls";
+import { FiLoader } from "react-icons/fi";
 
 
-export default function FakePollCard({poll}) {
+export default function SinglePollsCards({poll}) {
   // eslint-disable-next-line no-unused-vars
   const [polls, refetch ] = useGetAllPolls();
+ 
+
+  
+
+
+  
 
   
   const [selectedOption, setSelectedOption] = useState(null);
   const [comment, setComment] = useState("");
   const [copied, setCopied] = useState(false);
 
-  if (!poll) return <p>লোড হচ্ছে...</p>;
+  if (polls?.length === 0) return    <div className="text-center">
+    loading....
+  </div>;
 
   const expiresIn = new Date(poll.expiresAt).getTime() - Date.now();
   const expiresText = expiresIn > 0 ? `${Math.ceil(expiresIn / 3600000)} ঘন্টা বাকি` : "মেয়াদ শেষ";

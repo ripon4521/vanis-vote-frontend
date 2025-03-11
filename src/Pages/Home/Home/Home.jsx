@@ -43,8 +43,8 @@ const Home = () => {
             <button onClick={toggleDarkMode} className="p-2 rounded-md bg-gray-200 dark:bg-gray-700">
               {darkMode ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
             </button>
-            <a href="/polls/create" className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
-              পোল তৈরি করুন
+            <a href="/polls" className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
+              পোল 
             </a>
           </div>
         </div>

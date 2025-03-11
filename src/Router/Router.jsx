@@ -4,6 +4,8 @@ import Home from "../Pages/Home/Home/Home";
 import Unauthorized from "../Pages/Unauthorized/Unauthorized";
 import CreatePollForm from "../Pages/Home/CreatePollFrom/CreatePollForm";
 import FakePoll from "../Pages/Home/FakePoll/FakePoll";
+import PrivatePoll from "../Pages/Home/FakePoll/PrivatePoll";
+import SinglePolls from "../Pages/Home/FakePoll/SinglePolls";
 
 
 
@@ -22,8 +24,14 @@ export const router = createBrowserRouter([
                 path:'/polls/create',
                 element: <CreatePollForm/>
             },{
-                path:'/polls/fakePoll',
+                path:'/polls',
                 element:<FakePoll/>
+            },{
+                path:'/private-polls',
+                element:<PrivatePoll/>
+            },{
+                path:'/polls/:id',
+                element:<SinglePolls/>
             }
          
           

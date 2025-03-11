@@ -7,9 +7,10 @@ import { toast } from "react-toastify";
 import useGetAllPolls from "../../../Hooks/useGetAllPolls";
 
 
-export default function FakePollCard({poll}) {
+export default function PrivatePollCard({poll}) {
   // eslint-disable-next-line no-unused-vars
   const [polls, refetch ] = useGetAllPolls();
+  
 
   
   const [selectedOption, setSelectedOption] = useState(null);
