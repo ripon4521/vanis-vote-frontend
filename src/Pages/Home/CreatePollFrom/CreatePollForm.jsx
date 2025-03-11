@@ -1,4 +1,7 @@
 import  { useState } from "react";
+import { toast } from "react-toastify";
+import { axiosPublic } from "../../../Hooks/usePublic";
+import { useNavigate } from "react-router-dom";
 
 const CreatePollForm = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -9,6 +12,7 @@ const CreatePollForm = () => {
     hideResults: false,
     isPrivate: false,
   });
+  const navigate = useNavigate();
 
 
   const handleChange = (e) => {
@@ -36,23 +40,35 @@ const CreatePollForm = () => {
         setIsSubmitting(false);
         return;
       }
-
       const input = {
         question: formData.question,
-        options,
+        options: options.map((opt, index) => ({
+          id: `opt${index + 1}`,
+          text: opt,
+          votes: 0,
+        })),
+        totalVotes: 0,
         expiresIn: formData.expiresIn,
         hideResults: formData.hideResults,
         isPrivate: formData.isPrivate,
-        popular:0,
-        like:0,
-        comments:[]
+        popular: 0,
+        like: 0,
+        hasVoted:false,
+        comments: [],
       };
 
-      console.log("Poll Data Submitted: ", input);
+      axiosPublic.post('/polls/create-polls', input).then(response => {
+        console.log(response)
+        toast.success("Poll created successfully!");
+        navigate('/polls/fakePoll')
+      }).catch(err => {
+        console.log(err)
+      })
+
       
-      // Simulate successful creation, replace with actual redirect or logic as needed
-      alert("Poll created successfully!");
-      // Redirecting to a new page (replace with your actual route)
+     
+    
+
 
     } catch (error) {
       console.error("Failed to create poll. Please try again.");

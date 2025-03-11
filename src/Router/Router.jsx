@@ -3,6 +3,7 @@ import MainLayout from "../Layout/MainLayout";
 import Home from "../Pages/Home/Home/Home";
 import Unauthorized from "../Pages/Unauthorized/Unauthorized";
 import CreatePollForm from "../Pages/Home/CreatePollFrom/CreatePollForm";
+import FakePoll from "../Pages/Home/FakePoll/FakePoll";
 
 
 
@@ -20,6 +21,9 @@ export const router = createBrowserRouter([
             },{
                 path:'/polls/create',
                 element: <CreatePollForm/>
+            },{
+                path:'/polls/fakePoll',
+                element:<FakePoll/>
             }
          
           
